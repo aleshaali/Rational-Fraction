@@ -1,0 +1,273 @@
+// this file holds function definitions for class rational
+#include <iostream>
+#include <stdlib.h>
+#include "rational8.h"
+#include <string>
+#include <sstream>
+#include <cctype>
+using namespace std;
+int rational::counter=0;
+
+//Definitions of all member functions
+
+//this constructor initializes a rational object with the numerator being parameter p and the denominator being parameter q
+//the constructor exits the program if the q parameter is 0 because that would make the fraction undefined
+//if the rational object is successfully initialized, the user will see how many rational objects have been created
+rational::rational (int p, int q)
+{
+   if (q==0)
+        exit(1);
+   numerator = p;
+   denominator = q;
+   counter++;
+   cout <<"So far " <<counter <<" rational objects created\n";
+}
+
+
+ /* Set the invoking object's value from user input */
+/*void rational::input()
+{
+   char c;
+   int top, bottom;
+   bool valid = true;
+
+   // keep reading until valid input is entered
+   do {
+     cin >> top >> c >> bottom;
+     if (c!='/' || bottom==0)
+     {
+        cout <<"wrong input. Enter a rational (p/q):";
+        valid = false;
+     }
+    else
+        valid = true;
+   } while (!valid);
+
+   // set the invoking object's numerator, denominator
+   numerator = top;
+   denominator = bottom;
+}*/
+
+ /* Display invoking object's value in the standard output, in the form of numerator/denominator */
+/*void rational::output()
+{
+ cout << numerator << "/" << denominator;}*/
+
+//this accessor function returns the invoking object's numerator
+int rational::get_numerator()
+{
+   return numerator;
+}
+
+//this accessor function returns the invoking object's denominator
+int rational::get_denominator()
+{
+   return denominator;
+}
+
+// Set invoking object to be the sum of op1 and op2
+/*void rational::Sum (const rational &op1,const rational& op2)
+{
+        numerator = (op1.numerator * op2.denominator + op2.numerator*op1.denominator);
+         numerator = (op1.numerator * op2.denominator + op2.numerator*op1.denominator);
+        denominator = op1.denominator*op2.denominator;
+denominator = op1.denominator*op2.denominator;
+
+        int divisor=gcd(numerator, denominator);
+        numerator = numerator/divisor;
+        denominator = denominator/divisor;
+
+}*/
+//this mutator functions sets the rational object equal to n/d
+void rational::Set (int n, int d)
+{
+        numerator = n;
+        denominator = d;
+}
+/*void rational::Product(const rational& num1, const rational& num2)
+{
+        numerator = (num1.numerator* num2.numerator);
+        denominator = (num1.denominator* num2.denominator);
+
+        int divisor=gcd(numerator, denominator);
+        numerator = numerator/divisor;
+        denominator = denominator/divisor;
+
+}*/
+//Extra: return the gcd of numbers a and b
+//first parameter, a, is the numerator
+//second parameter, b, is the denominator
+//postcondition: determine the greatest common divisor of the numerator and denominator
+//return value: integer that is the greates common divisor of the integer parameters a and b
+int rational:: gcd (int a, int b)
+{
+   while (a!=0 && b!=0)
+      {
+      a = a % b;
+      if (a!=0)
+ b = b % a;
+   }
+   if (a==0)
+      return b;
+     if (b==0)
+     return a;
+}
+//simplify the rational object with use of the gcd function above by dividing rational's numerator and denominator by the gcd and setting the quotients equal to the respective numerator and denominator
+//no return value
+void rational:: simplify ()
+{
+        int divisor=gcd(numerator, denominator);
+        numerator = numerator/divisor;
+        denominator = denominator/divisor;
+}
+// this function will overload the + operator so that it will accept arguments of class type rational(the arguments passed)
+// this function will add the two parameters together, simplify the fraction, and return the simplified sum 
+rational operator +(const rational &op1, const rational &op2)
+{
+        rational temp;
+        temp.numerator = (op1.numerator * op2.denominator + op2.numerator*op1.denominator);
+        temp.denominator = op1.denominator*op2.denominator;
+        temp.simplify();
+        return temp;
+}
+//this function will overload the - operator so that it will accept arguments of class type rational (the arguments passed)
+//this function will subtract the second parameter, op2, from the first parameter, op1, simplify the fraction, and return the simplified difference
+rational operator -(const rational &op1, const rational &op2)
+{
+        rational temp;
+        temp.numerator = (op1.numerator * op2.denominator - op2.numerator*op1.denominator);
+        temp.denominator = op1.denominator*op2.denominator;
+        temp.simplify();
+        return temp;
+}
+//this function will overload the - operator so that it will accept an argument of class type rational (the argument passed)
+//this function will negate the parameter, simplify, and return the negation of the parameter
+rational operator -(const rational &op1)
+{
+        rational temp;
+        temp.numerator = -(op1.numerator);
+        temp.denominator = op1.denominator;
+        temp.simplify();
+        return temp;
+}
+//this function will overload the / operator so that it will accept arguments of class type rational (the arguments passed)
+//this function will divide the first parameter, op1, by the second parameter, op2, simplify the fraction, and return the simplified quotient 
+rational operator /(const rational &op1, const rational &op2)
+{
+        rational temp;
+        temp.numerator = (op1.numerator * op2.denominator);
+        temp.denominator = op1.denominator*op2.numerator;
+         temp.simplify();
+        return temp;}
+//this function will overload the * operator so that it will accept arguments of class type rational (the arguments passed)
+//this function will multiply the parameters op1 and op2, simplify the fraction, and return the simplfied product
+rational operator *(const rational &op1, const rational &op2)
+{
+        rational temp;
+        temp.numerator = (op1.numerator * op2.numerator);
+        temp.denominator = op1.denominator*op2.denominator;
+        temp.simplify();
+        return temp;
+}
+//this function will overload the == operator so that it will accept arguments of class type rational (the arguments passed)
+//this function will return true if the the parameters passed, op1 and op2, are equal
+bool operator ==(const rational &op1, const rational &op2)
+{
+        return((double)op1.numerator/op1.denominator == (double)op2.numerator/op2.denominator);
+}
+//this function will overload the != operator so that it will accept arguments of class type rational (the arguments passed)
+// this function will return true if the parameters passed, op1 and op2, are not equal
+bool operator !=(const rational &op1, const rational &op2)
+{
+    return ((double)op1.numerator/op1.denominator != (double)op2.numerator/op2.denominator);
+}
+//this function will overload the < operator so that it will accept arguments of class type rational (the arguments passed)
+// this will return true if the first parameter passed, op1, is less than the second parameter passed, op2
+bool operator <(const rational &op1, const rational &op2)
+{
+    return ((double)op1.numerator/op1.denominator < (double)op2.numerator/op2.denominator);
+}
+//this function will overload the <= operator so that it will accept arguments of class type rational (the arguments passed)
+// this will return true if the first paremeter passed, op1, is less than or equal to the the second parameter passed, op2
+bool operator <=(const rational &op1, const rational &op2)
+{
+    return ((double)op1.numerator/op1.denominator <= (double)op2.numerator/op2.denominator);
+}
+//this function will overload the >= operator so that it will accept arguments of class type rational (the arguments passed)
+// this will return true if the first paremeter passed, op1, is greater than or equal to the second parameter passed, op2
+bool operator >=(const rational &op1, const rational &op2)
+{
+    return ((double)op1.numerator/op1.denominator >= (double)op2.numerator/op2.denominator);
+}
+//this function will overload the > operator so that it will accept arguments of class type rational (the arguments passed)
+// this will return true if the first parameter passed, op1, is greater than the second paremeter passed, op2
+bool operator >(const rational &op1, const rational &op2)
+{
+    return ((double)op1.numerator/op1.denominator > (double)op2.numerator/op2.denominator);
+}
+//this function will overload the << operator so that it will accept arguments of class type rational (the second argument passed)
+//this function checks to insure that the input is the valid
+// this will return a reference to ins, meaning that it will return the object itself as opposed to the value of object
+//returns a stream
+istream & operator >> (istream &ins, rational &op1)
+{bool isValid=true;//will check if it is a valid rational
+    bool found_slash=false;//will check if the rational number is a fraction
+    string str;
+      char c;
+
+    ins >> str;//input a rational number
+
+
+    for (int i=0; i<str.length() && isValid == true; i++)
+    {
+        if (str[i]=='-')
+        {
+            if (i != 0)
+            {
+                isValid = false; //if theres a negative anywhere but the first position, its not a valid rational
+            }
+
+        }
+        else if (str[i]=='/')
+        {
+            if (i==0)
+            {
+                isValid = false;//not valid if the first character is a slash
+            }
+            else
+            {
+                found_slash = true;//verifies the number is a fraction
+            }
+
+        }
+        else if (!isdigit(str[i]))
+        {
+            isValid = false;//if the rest of the characters are not digits, its not a valid rational either
+        }
+
+    }
+
+    stringstream ss(str, stringstream::in);
+
+    if (found_slash == false)
+    {
+        ss >> op1.numerator;//if its not a fraction only read in the number as the numerator
+        op1.denominator = 1;//set denominator to one
+    }
+    else
+    {
+        ss >> op1.numerator >> c >> op1.denominator;//if it is a fraction read in both numerator and denominator
+     }
+       return ins;
+
+}
+//this function will overload the << operator so that it will accept arguments of class type rational (the second argument passed)
+// this will return a reference to outs, meaning that it will return the object itself as opposed to the value of object
+//returns a stream
+ostream & operator << (ostream &outs, const rational &op1)
+{
+        outs << op1.numerator << "/" << op1.denominator;
+        return outs;
+
+}
+
