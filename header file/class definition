@@ -1,0 +1,57 @@
+// this file includes the class definition for class rational
+#include <iostream>
+#include <stdlib.h>
+
+using namespace std;
+
+class rational
+{
+public:
+   /* default constructor set the rational number to 0, (i.e., numerator is 0, denominator is 1) */
+   rational (int p=0, int q=1);
+
+   /* Set the invoking object's value from user input */
+   void input();
+
+   /* Display invoking object's value in the standard output, in the form of numerator/denominator */
+   void output();
+
+   //return the invoking object's numerator
+   int get_numerator();
+
+   //return the invoking object's denominator
+   int get_denominator();
+
+   // Set invoking object to be the sum of op1 and op2
+   void Sum (const rational &op1,const  rational &op2);
+
+   void Set (int n, int d);
+
+   void Product (const rational & num1, const rational & num2);
+
+    //Arithmetic operators
+   friend rational operator +(const rational &op1, const rational &op2);
+   friend rational operator -(const rational &op1, const rational &op2);
+   friend rational operator *(const rational &op1, const rational &op2);
+   friend rational operator /(const rational &op1, const rational &op2);
+   friend rational operator -(const rational &op1);
+
+   //boolean operators
+   friend bool operator ==(const rational &op1, const rational &op2);
+   friend bool operator !=(const rational &op1, const rational &op2);
+   friend bool operator <(const rational &op1, const rational &op2);
+   friend bool operator <=(const rational &op1, const rational &op2);
+   friend bool operator >=(const rational &op1, const rational &op2);
+   friend bool operator >(const rational &op1, const rational &op2);
+
+   //I/O operators
+   friend istream & operator >>(istream & ins, rational &op1);
+   friend ostream & operator <<(ostream & outs, const rational &op1);
+                                                                                                                    static int counter;
+
+private:
+   int numerator;
+   int denominator;
+    void simplify();
+   int gcd(int a, int b);
+};
